@@ -16,15 +16,8 @@ def get_info(*args):
         for rider in result["data"]["riderData"]:
             try:
                 riders_listbox.insert("end", rider["name"])
-                riders_result.append(rider["name"])
-                riders_info.append(rider["name"])
-                for key, value in rider.items():
-                    if key == "bike" or  key == "number":
-                        riders_info.append(value)
-                    elif key == "name":
-                        pass
-                    else:
-                        riders_result.append(value)
+                riders_list.append(rider["name"])
+                riders_result.append(rider)
             except KeyError:
                 pass
     except ValueError:
@@ -32,19 +25,23 @@ def get_info(*args):
 
 def get_time(*args):
     result_text.delete("1.0", "end")
+    rider_cursor = riders_listbox.curselection()
+    rider_number = rider_cursor[0]
     try:
         for item in riders_result:
-            result_text.insert("end", item)
-            result_text.insert("end", "\n")
+            for key, value in item.items():
+                if value == riders_list[rider_number]:
+                    print(value)
+                    result_text.insert("end", item)
+                    result_text.insert("end", "\n")
     except ValueError:
         pass
-
 
 root = Tk()
 root.title("Motocross result")
 
 riders_result = []
-riders_info = []
+riders_list = []
 
 main_window = ttk.Frame(root)
 main_window.grid(column = 0, row = 0)
