@@ -4,7 +4,10 @@ from tkinter import ttk
 import json
 
 def get_info(*args):
+    """Get information from API and make riders_listbox"""
     riders_listbox.delete("0", "end")
+    riders_list.clear()
+    riders_result.clear()
     try:
         year = year_list.get()
         track_name = track_list.get()
@@ -24,18 +27,24 @@ def get_info(*args):
         pass
 
 def get_time(*args):
-    result_text.delete("1.0", "end")
+    """Sets the result in textbox when you select rider in rider_listbox"""
     rider_cursor = riders_listbox.curselection()
-    rider_number = rider_cursor[0]
-    try:
-        for item in riders_result:
-            for key, value in item.items():
-                if value == riders_list[rider_number]:
-                    print(value)
-                    result_text.insert("end", item)
-                    result_text.insert("end", "\n")
-    except ValueError:
-        pass
+    if len(rider_cursor)==1:
+        result_text.delete("1.0", "end")
+        rider_number = int(rider_cursor[0])
+        try:
+            for item in riders_result:
+                if item["name"] == riders_list[rider_number]:
+                    for key, value in item.items():
+                        result_text.insert("end", key)
+                        if len(key) == 1:
+                            result_text.insert("end", "  ")
+                        else:
+                            result_text.insert("end", " ")
+                        result_text.insert("end", value)
+                        result_text.insert("end", "\n")
+        except ValueError:
+            pass
 
 root = Tk()
 root.title("Motocross result")
@@ -64,12 +73,13 @@ moto_list.grid(column = 0, row = 3)
 
 ttk.Label(main_window, text="Riders").grid(column=0, row=4)
 riders_listbox = Listbox(main_window, height=10)
-riders_listbox.grid(column = 0, row = 5)
+riders_listbox.grid(column = 0, row = 5, sticky=(N,E,S,W))
 
 scroll_bar_listbox = ttk.Scrollbar(main_window, orient=VERTICAL, command=riders_listbox.yview)
 scroll_bar_listbox.grid(column=0, row=5, sticky=(N,E,S))
 riders_listbox.configure(yscrollcommand=scroll_bar_listbox.set)
 
+ttk.Label(main_window, text="Result").grid(column=1, row=4)
 result_text = Text(main_window, width=30, height=10)
 result_text.grid(column = 1, row = 5)
 
@@ -77,7 +87,7 @@ scroll_bar_textbox = ttk.Scrollbar(main_window, orient=VERTICAL, command=result_
 scroll_bar_textbox.grid(column=1, row=5, sticky=(N,E,S))
 result_text.configure(yscrollcommand=scroll_bar_textbox.set)
 
-ttk.Button(main_window, text="Get result", command=get_info).grid(column=1, row=0, rowspan=3)
+ttk.Button(main_window, text="Get result", command=get_info).grid(column=1, row=0, rowspan=4, sticky=(N,E,S,W))
 
 riders_listbox.bind('<<ListboxSelect>>', get_time)
 
