@@ -60,7 +60,9 @@ year_list["values"] = (18, 17, 16)
 year_list.grid(column = 0, row = 0)
 
 track_list = ttk.Combobox(main_window)
-track_list["values"] = ("HANGTOWN", "GLEN-HELEN-RACEWAY", "THUNDER-VALLEY")
+track_list["values"] = ("HANGTOWN", "GLEN-HELEN-RACEWAY", "THUNDER-VALLEY", "HIGH-POINT-RACEWAY",
+                        " MUDDY-CREEK-RACEWAY", "REDBUD", "WICK-338", "SPRING-CREEK-MX-PARK",
+                        "WASHOUGAL-MX-PARK", "BUDDS-CREEK-MOTOCROSS", "IRONMAN-RACEWAY")
 track_list.grid(column = 0, row = 1)
 
 class_list = ttk.Combobox(main_window)
